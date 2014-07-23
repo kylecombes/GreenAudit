@@ -1,0 +1,49 @@
+.background {
+    background-color: #002EB8;
+	min-width: 250px;
+	width: 25%;
+	padding: 5px;
+	border-radius: 10px;
+	margin: 20px 0 0 30px;
+	color: #000099;
+}
+
+.section {
+	background-color: #ADD6FF;
+	margin: 5px;
+	padding: 5px;
+	border-radius: 5px;
+}
+
+h1, h2 {
+	margin: 0;
+}
+
+.section:nth-child(1) {
+	text-align: center;
+}
+
+body {
+	background-color: #D6EBFF;
+}
+
+li {
+	border: 1px solid;
+	padding: 3px;
+	margin: 3px 0;
+	background-color: #B2E6FF;
+}
+
+#addTask {
+	float: right;
+	width: 35%;
+	white-space: nowrap;
+}
+
+#taskInput {
+	width: 60%;
+}
+
+#done {
+	text-decoration: line-through;
+}
