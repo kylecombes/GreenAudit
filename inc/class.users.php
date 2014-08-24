@@ -29,23 +29,19 @@ class UserManager {
 	 *
 	 * @return string    a message indicating the action status
 	 */
-	public function createAccount()
+	public function createAccount($email, $pass)
 	{
-		$u = trim($_POST['email']);
-		$p = $_POST['password1'];
 		$v = sha1(time());
 
 		$sql = "SELECT COUNT(Email) AS theCount
 				FROM users
 				WHERE Email=:email";
 		if($stmt = $this->_db->prepare($sql)) {
-			$stmt->bindParam(":email", $u, PDO::PARAM_STR);
+			$stmt->bindParam(":email", $email, PDO::PARAM_STR);
 			$stmt->execute();
-			$row = $stmt->fetch();
-			if($row['theCount']!=0) {
-				return "<h2> Error </h2>"
-					. "<p> Sorry, that email is already in use. "
-					. "Please try again. </p>";
+			$res = $stmt->fetch();
+			if($res['theCount']!=0) {
+				return "used-email";
 			}
 			/*if(!$this->sendVerificationEmail($u, $v)) {
 				return "<h2> Error </h2>"
@@ -59,18 +55,18 @@ class UserManager {
 		}
 
 		$sql = "INSERT INTO users(Email, Password, ver_code)
-				VALUES(:email, MD5(:password), :ver)";
+				VALUES(:email, SHA1(:password), :ver)";
 		if($stmt = $this->_db->prepare($sql)) {
-			$stmt->bindParam(":email", $u, PDO::PARAM_STR);
-			$stmt->bindParam(":password", $p, PDO::PARAM_STR);
+			$stmt->bindParam(":email", $email, PDO::PARAM_STR);
+			$stmt->bindParam(":password", $pass, PDO::PARAM_STR);
 			$stmt->bindParam(":ver", $v, PDO::PARAM_STR);
 			$stmt->execute();
 			$stmt->closeCursor();
 
 		} else {
-			return "<h2> Error </h2><p> Couldn't insert the "
-				. "user information into the database. </p>";
+			return "unknown-error";
 		}
+		return "success";
 	}
 	
 	
@@ -79,22 +75,22 @@ class UserManager {
 	 *
 	 * @return boolean    TRUE on success and FALSE on failure
 	 */
-	public function accountLogin()
+	public function accountLogin($email, $pass)
 	{
 		$sql = "SELECT Email
 				FROM users
 				WHERE Email=:email
-				AND Password=MD5(:pass)
+				AND Password=SHA1(:pass)
 				LIMIT 1";
 		try
 		{
 			$stmt = $this->_db->prepare($sql);
-			$stmt->bindParam(':email', $_POST['email'], PDO::PARAM_STR);
-			$stmt->bindParam(':pass', $_POST['password'], PDO::PARAM_STR);
+			$stmt->bindParam(':email', $email, PDO::PARAM_STR);
+			$stmt->bindParam(':pass', $pass, PDO::PARAM_STR);
 			$stmt->execute();
 			if($stmt->rowCount()==1)
 			{
-				$_SESSION['Email'] = htmlentities($_POST['email'], ENT_QUOTES);
+				$_SESSION['Email'] = htmlentities($email, ENT_QUOTES);
 				$_SESSION['LoggedIn'] = 1;
 				return TRUE;
 			}

@@ -35,12 +35,20 @@ body {
 	-moz-box-shadow: 5px 5px 10px #c7c7c7;
 	-webkit-box-shadow: 5px 5px 10px #c7c7c7;
 	overflow: auto;
+	float: left;
+	width: 100%;
+}
+
+#padded-container {
+	padding: 2em;
+	overflow-y: auto;
 }
 
 /** ---------- Header ---------- */
 
 header {
-	overflow: auto;
+	overflow: visible;
+	display: block;
 }
 
 nav {
@@ -55,15 +63,38 @@ nav ul {
 
 nav li {
 	display: inline;
-	padding: 0 0.5em;
+	float: left;
 }
 
-nav ul a,
-#session-info span,
-#session-info a {
+nav ul a {
 	line-height: 50px;
-	font-size: x-large;
+	font-size: 22px;
+	padding: 0 0.5em;
 	text-decoration: none;
+	cursor: pointer;
+	width: 100%;
+}
+
+nav ul li ul {
+	display: none;
+	background: #3686d2;/*
+	background: -moz-linear-gradient(top, #2c72b4 0%, #25629c 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#2c72b4), color-stop(100%,#25629c));
+	background: -webkit-linear-gradient(top, #2c72b4 0%,#25629c 100%);
+	background: -o-linear-gradient(top, #2c72b4 0%,#25629c 100%);
+	background: -ms-linear-gradient(top, #2c72b4 0%,#25629c 100%);
+	background: linear-gradient(to bottom, #2c72b4 0%,#25629c 100%);*/
+	overflow: auto;
+}
+
+nav ul li:hover ul {
+	display: block;
+}
+
+nav li a,
+nav li a:visited,
+nav li a:hover {
+	color: #DEDEDE;
 }
 
 #session-info {
@@ -74,7 +105,7 @@ nav ul a,
 /** ---------- Device List ---------- **/
 
 #add-device-container,
-#device-list-container {
+.list-container {
 	float: left;
 	overflow: auto;
 	width: 100%;
@@ -86,16 +117,16 @@ nav ul a,
 	padding: 1em 2em;
 }
 
-#device-list-container {
+.list-container {
 	border-top: 2px solid #e6e6e6;
 }
 
-#device-list {
+.list-container ul {
 	margin: 0;
 	padding: 0;
 }
 
-#device-list li {
+.list-container ul li {
 	overflow: auto;
 	margin: 1em;
 	padding: 1em;
@@ -114,17 +145,17 @@ nav ul a,
 	cursor: row-resize;
 }
 
-#device-list li td:not(:first-child) {
+.list-container ul li td:not(:first-child) {
 	width: 40%;
 	font-size: 20px;
 	vertical-align: middle;
 }
 
-#device-list li td:first-child {
+.list-container ul li td:first-child {
 	padding-right: 1em;
 }
 
-#device-list li button {
+.list-container ul li button {
 	float: right;
 }
 
@@ -133,4 +164,60 @@ nav ul a,
 	float: left;
 	width: 50%;
 	
+}
+
+/** ---------- Forms ---------- **/
+
+input.invalid {
+	border: 1px solid #DD4B39;
+}
+
+.form-element {
+	margin-bottom: 1em;
+	overflow-y: auto;
+}
+
+.form-element label {
+	width: 100%;
+	float: left;
+	margin-bottom: 0.2em;
+}
+
+label.error {
+	color: #DD4B39;
+	margin-top: 0.1em;
+}
+
+/** ---------- Buttons ---------- **/
+
+.blue-button {
+	padding: 0.7em;
+	background-color: #3079ED;
+	border: none;
+	color: white;
+	font: large Arial, sans-serif;
+	text-decoration: none;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	display: inline-block;
+}
+
+/** ---------- Jeditable ---------- **/
+
+.jedit-box input {
+	height: 23px;
+	border: none;
+	padding: 0;
+}
+
+/** ---------- Typography ---------- **/
+
+body {
+	font-family: Arial, sans-serif;
+}
+
+h1, h2, h3 {
+	font-family: Arial, sans-serif;
+	font-weight: normal;
 }

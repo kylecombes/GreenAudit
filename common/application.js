@@ -1,3 +1,5 @@
+var list;
+
 $(document).ready( function() {
 	$("#device-add-button").on('click', addDevice);
 	
@@ -6,7 +8,9 @@ $(document).ready( function() {
 		refreshTotals();
 	});
 	
-	$("#device-list").sortable({
+	list = $('.list-container').children('ul');
+	
+	list.sortable({
 		handle   : ".reorder-handle",
 		update   : function(event, ui){
 		   
@@ -16,12 +20,30 @@ $(document).ready( function() {
 		forcePlaceholderSize: true
 	});
 	
-	$("h1").text("Room "+id);
+	$(".device-name").editable(renameDevice, {
+		tooltip: 'Click to edit',
+		style: 'inherit',
+		height: 'none',
+		cssclass: 'jedit-box'
+	} );
 	
 	$("#save-button").on('click', saveRoom);
+	$(".edit-button").on('click', function() {
+		roomId = +$(this).closest('.room-list-item').data('id');
+		window.location = '/room-edit?id=' + roomId;
+	});
+	
+	$("#room-add-button").on('click', addRoom);
+	$(".room-list-item").on('click', '.remove-button', deleteRoom);
 	
 	refreshTotals();
 });
+
+function renameDevice(value) {
+	var parent = $(this).closest('span');
+	$(this).remove();
+	parent.val(value);
+}
 
 function addDevice() {
 	/** TODO: Input validation **/
@@ -39,7 +61,7 @@ function addDevice() {
 			+ '<td><span class="device-hours">'+hours+'</span> hours</td>'
 			+ '<td><button class="remove-button">Remove</button></td></tr></table>'
 			+ '</li>');
-		$("#device-list").prepend(item);
+		$(list).prepend(item);
 	}
 	refreshTotals();
 	nameBox.val("");
@@ -50,7 +72,7 @@ function addDevice() {
 
 function refreshTotals() {
 	var whTotal = 0;
-	$("#device-list").children().each(function() {
+	list.children().each(function() {
 		var watts = $(this).data('watts');
 		var hrs = $(this).data('hours');
 		whTotal += (watts * hrs);
@@ -62,11 +84,26 @@ function refreshTotals() {
 	$("#monthly-cost").text((dailyCost * 30.4).toFixed(2));
 }
 
+function addRoom() {
+	var name = $("#room-add-name").val().trim();
+	
+	if(name.length > 0) {
+		$.ajax({
+			type: "POST",
+			url: "/db-interaction/room-manage.php",
+			data: "action=add&name="  + name,
+			success: function(result_id) {
+				window.location = '/room-edit?id=' + result_id;
+			},
+			error: saveUnsuccessful
+		});
+	}
+}
+
 function saveRoom() {
-	var name = "A Room";
 	var values = {};
 	var pos = 0;
-	$("#device-list").children().each(function() {
+	list.children().each(function() {
 		var obj = {
 			n: $(this).find('.device-name').text(),
 			w: +$(this).data('watts'),
@@ -89,17 +126,33 @@ function saveRoom() {
 		$.ajax({
 			type: "POST",
 			url: "/db-interaction/room-manage.php",
-			data: "action=update&id=" + id + "&name="  + name  + "&devices=" +  json,
+			data: "action=update&id=" + id + "&devices=" +  json,
 			success: saveSuccessful,
 			error: saveUnsuccessful
 		});
 	}
 }
 
+function deleteRoom() {
+	li = $(this).closest('.room-list-item');
+	id = li.data('id');
+	if (id) {
+		$.ajax({
+				type: "POST",
+				url: "/db-interaction/room-manage.php",
+				data: "action=delete&id=" + id,
+				success: saveSuccessful,
+				error: saveUnsuccessful
+			});
+	}
+	li.remove();
+}
+	
+
 function saveSuccessful(theResponse) {
 	
 }
 
-function saveUnsuccessful() {
-	
+function saveUnsuccessful(response) {
+	alert("Save unsuccessful: " + response);
 }

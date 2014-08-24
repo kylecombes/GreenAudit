@@ -3,32 +3,27 @@
 	$pageTitle = "Home";
 	include_once "common/header.php";
 	include_once "inc/constants.php";
-	include_once "inc/class.room.list.php"; ?>
+	include_once "inc/class.room.manage.php"; ?>
+<?php if (isLoggedIn()) : ?>
 <script type="text/javascript">var id=<?php echo 1; ?>;</script>
 <script type='text/javascript' src="/common/application.js"></script>
+<script type='text/javascript' src="/js/jquery.jeditable.min.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 
 <div id="add-device-container">
-	<h1>Room</h1>
-	<button id="save-button" style="float:right;">Save Room</button>
-	<div style="float:left;width:65%;">
-		<input placeholder="Name" type="text" id="device-add-name" length="40"/>
-		<input placeholder="Wattage" type="number" id="device-add-wattage" length="40"/>
-		<input placeholder="Hours on per day" type="number" id="device-add-hours" length="40"/>
-		<button id="device-add-button">Add</button>
-	</div>
-	<div style="float:left;width:35%;">
-		<table>
-			<tr><td>Daily power usage:</td><td><span id="daily-usage"></span> kW/h</td></tr>
-			<tr><td>Daily electricity cost:</td><td>$<span id="daily-cost"></span></td></tr>
-			<tr><td>Monthly electricity cost:</td><td>$<span id="monthly-cost"></span></td></tr>
-		</table>
-	</div>
+	<h1>Rooms</h1>
+	<input placeholder="Name" type="text" id="room-add-name" length="60"/>
+	<button id="room-add-button">Add</button>
 </div>
-<div id="device-list-container">
-	<ul id="device-list">
-		<?php echo (new DeviceListManager())->getRenderedHTML(1); ?>
+<div id="room-list-container" class="list-container">
+	<ul>
+		<?php echo (new RoomManager())->getRoomsAsListHTML(); ?>
 	</ul>
 </div>
-
+<?php else : ?>
+<div id="padded-container">
+	<h1>Welcome to GreenAudit!</h1>
+	<p>To get started, please <a href="/sign-up">sign up</a>.</p>
+</div>
+<?php endif; ?>
 <?php include_once "common/footer.php"; ?>

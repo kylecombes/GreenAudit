@@ -12,7 +12,7 @@
 		if(!empty($_POST['email']) && !empty($_POST['password'])):
 			include_once 'inc/class.users.php';
 			$users = new UserManager($db);
-			if($users->accountLogin()===TRUE):
+			if($users->accountLogin($_POST['email'], $_POST['password'])===TRUE):
 				echo "<meta http-equiv='refresh' content='0;/'>";
 				exit;
 			else:
@@ -22,8 +22,9 @@
 			endif;
 		endif;
 ?>
-		<div class="half-width" style="border-right: 1px solid #cccccc;">
-			<h2>Sign In</h2>
+		<table style="width:100%;margin:2em 0;"><tr>
+		<td style="width:50%;padding:0 2em;border-right: 1px solid #cccccc;">
+			<h1>Sign In</h1>
 			<form method="POST" action="login" name="loginform" id="loginform">
 				<div>
 					<label for="email">Email</label><br>
@@ -32,22 +33,19 @@
 					<label for="password">Password</label><br>
 					<input type="password" name="password" id="password" size="40"/>
 					<br /><br />
-					<input type="submit" name="login" id="login" value="Login" class="button" />
+					<label><a href="/password.php">Did you forget your password?</a></label>
+					<br /><br />
+					<input type="submit" name="login" id="login" value="Login" />
 				</div>
-			</form><br /><br />
-			<p><a href="/password.php">Did you forget your password?</a></p>
-		</div>
-		
-		<div class="half-width">
-			<h2>Sign Up</h2>
-			<form action="sign-up" method="POST">
-				Email address<br><input type="text" name="email" size="40"><br><br>
-				Password<br><input type="password" name="password1" size="40"><br><br>
-				<?php if (isset($error)):?><span class="error"><?php echo $error ?></span><br><?php endif; ?>
-				Verify Password<br><input type="password" name="password2" size="40"></br><br>
-				<input type="submit" value="Sign Up">
 			</form>
-		</div>
+			<p></p>
+		</td>
+		
+		<td style="width:50%;padding:0 2em;">
+			<h2>Not signed up yet?</h2>
+			<p>Don't worry, it's easy and only takes a minute!</p>
+			<a class="blue-button" style="float:right;" href="/sign-up">Sign up</a>
+		</td></tr></table>
 <?php
 	endif;
 	include_once "common/footer.php";

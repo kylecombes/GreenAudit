@@ -1,4 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<?php
+	include_once "common/functions.php";
+	
+	if (isset($requiresLogin) && $requiresLogin == false && !isLoggedIn()) {
+		header('Location: /login');
+	}
+?>
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
@@ -13,16 +21,18 @@
 	<div id="main-container">
 		<header>
 			<nav><ul>
-				<li><a href="/">Home</a></li>
-				<li><a href="/sign-up">Sign Up</a></li>
+				<?php if (isLoggedIn()): ?>
+					<li><a href="/">My Rooms</a></li>
+					<li><a id="user-id"><?php echo $_SESSION['Email'] ?></a>
+						<ul>
+							<li><a href="/logout">Log out</a></li>
+						</ul>
+					</li>
+				<?php else: ?>
+					<li><a href="/login">Login</a></li>
+				<?php endif; ?>
 			</ul></nav>
 			<div id="session-info">
-				<?php if(isset($_SESSION['LoggedIn']) && isset($_SESSION['Email'])
-					&& $_SESSION['LoggedIn']==1): ?>
-					<span id="user-id"><?php echo $_SESSION['Email'] ?></span><span id="logout"><a href="/logout">Log out</a></span>
-				<?php else: ?>
-					<div id="sign-in"><a href="/login">Sign Up/Sign In</a></div>
-				<?php endif; ?>
 			</div>
 		</header>
 		<div id="content-container">

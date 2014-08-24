@@ -3,30 +3,30 @@
 session_start();
 
 include_once "../inc/constants.php";
-include_once "../inc/class.room.list.php";
+include_once "../inc/class.room.manage.php";
 
 if(!empty($_POST['action'])
 && isset($_SESSION['LoggedIn'])
 && $_SESSION['LoggedIn']==1)
 {
-	$listObj = new DeviceListManager();
+	$rm = new RoomManager();
 	switch($_POST['action'])
 	{
 		case 'add':
-			echo $listObj->addNewRoom();
+			echo $rm->addNewRoom();
 			break;
 		case 'update':
-			$listObj->updateRoom();
+			$rm->updateRoom();
 			break;
 		/*case 'sort':
-			$listObj->changeListItemPosition();
+			$rm->changeListItemPosition();
 			break;
 		case 'done':
-			echo $listObj->toggleListItemDone();
-			break;
-		case 'delete':
-			echo $listObj->deleteListItem();
+			echo $rm->toggleListItemDone();
 			break;*/
+		case 'delete':
+			echo $rm->deleteRoom();
+			break;
 		default:
 			header("Location: /");
 			break;
