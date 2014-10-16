@@ -1,6 +1,7 @@
 <?php
 	include_once "common/base.php";
 	include_once "inc/class.room.manage.php";
+	include_once "inc/class.devices.categories.php";
 	$requiresLogin = true;
 	if (isset($_GET['id']) && $_GET['id'] !== "") {
 		$id = $_GET['id'];
@@ -16,20 +17,38 @@
 <script type="text/javascript" src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 
 <div id="add-device-container">
-	<h1><?php echo $roomName ?></h1>
-	<button id="save-button" style="float:right;">Save Room</button>
-	<div style="float:left;width:65%;">
-		<input placeholder="Name" type="text" id="device-add-name" length="40"/>
-		<input placeholder="Wattage" type="number" id="device-add-wattage" length="40"/>
-		<input placeholder="Hours on per day" type="number" id="device-add-hours" length="40"/>
-		<button id="device-add-button">Add</button>
+	<div id="add-device-header">
+		<h1><?php echo $roomName ?></h1>
+		<button id="save-button">Save Room</button>
+		<button id="add-cancel-button">Add</button>
 	</div>
-	<div style="float:left;width:35%;">
+	<div style="float:left;width:35%;display:none;">
 		<table>
 			<tr><td>Daily power usage:</td><td><span id="daily-usage"></span> kW/h</td></tr>
 			<tr><td>Daily electricity cost:</td><td>$<span id="daily-cost"></span></td></tr>
 			<tr><td>Monthly electricity cost:</td><td>$<span id="monthly-cost"></span></td></tr>
 		</table>
+	</div>
+	<div id="add-device-details-container">
+		<div id="categories-container" class="list-container">
+			<ul id="categories-list"><?php echo (new DevCats())->getCategories(null) ?></ul>
+		</div>
+		<div id="add-device-fields-container">
+			<label>Name (optional)</label>
+			<input type="text" id="add-device-name"/>
+			<div id="add-device-power-container">
+				<label>Power consumption (watts)</label>
+				<input type="number" id="add-device-wattage"/>
+			</div>
+			<div id="add-device-hours-container">
+				<label>Hours on per day</label>
+				<input type="number" id="add-device-hours"/>
+			</div>
+			<div id="add-device-button-container">
+				<button id="add-device-add-button">Add</button>
+				<button id="add-device-cancel-button">Cancel</button>
+			</div>
+		</div>
 	</div>
 </div>
 <div id="device-list-container" class="list-container">

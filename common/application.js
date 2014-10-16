@@ -1,7 +1,7 @@
 var list;
 
 $(document).ready( function() {
-	$("#device-add-button").on('click', addDevice);
+	$("#add-device-add-button").on('click', addDevice);
 	
 	$(document).on('click', '.remove-button', function() {
 		$(this).closest(".device-list-item").remove();
@@ -37,6 +37,8 @@ $(document).ready( function() {
 	$(".room-list-item").on('click', '.remove-button', deleteRoom);
 	
 	refreshTotals();
+	
+	$("#categories-list").on('click', 'li', catClick);
 });
 
 function renameDevice(value) {
@@ -47,11 +49,11 @@ function renameDevice(value) {
 
 function addDevice() {
 	/** TODO: Input validation **/
-	var nameBox = $("#device-add-name");
+	var nameBox = $("#add-device-name");
 	var name = nameBox.val().trim();
-	var wattBox = $("#device-add-wattage");
+	var wattBox = $("#add-device-wattage");
 	var watts = +wattBox.val();
-	var hrBox = $("#device-add-hours");
+	var hrBox = $("#add-device-hours");
 	var hours = +hrBox.val();
 	if (name.length > 0 && watts > 0 && hours > 0) {
 		var item = $('<li class="device-list-item" data-watts="'+watts+'" data-hours="'+hours+'">'
@@ -82,6 +84,14 @@ function refreshTotals() {
 	var dailyCost = kwhTotal * 0.33;
 	$("#daily-cost").text(dailyCost.toFixed(2));
 	$("#monthly-cost").text((dailyCost * 30.4).toFixed(2));
+}
+
+function catClick() {
+	if ($(this).hasClass('cat-selected') == false) {
+		$('.cat-selected').removeClass('cat-selected');
+		$(this).addClass('cat-selected');
+		
+	}
 }
 
 function addRoom() {

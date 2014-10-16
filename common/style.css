@@ -114,7 +114,6 @@ nav li a:hover {
 #add-device-container {
 	border-bottom: 2px solid #bababa;
 	background-color: #f6f6f6;
-	padding: 1em 2em;
 }
 
 .list-container {
@@ -164,6 +163,87 @@ nav li a:hover {
 	float: left;
 	width: 50%;
 	
+}
+
+/** ---------- Device Add ---------- **/
+
+#add-device-details-container {
+	float: left;
+	width: 100%;
+	height: 200px;
+}
+
+#add-device-header {
+	width: 100%;
+	float: left;
+	padding: 1em;
+}
+
+#add-device-header > h1 {
+	float: left;
+}
+
+#add-device-header > button {
+	float: right;
+}
+
+#categories-container {
+	width: 50%;
+	float: left;
+	height: 100%;
+}
+
+#add-device-fields-container {
+	width: 50%;
+	/*max-width: 300px;*/
+	float: left;
+	padding: 0 1em;
+}
+
+#add-device-container label,
+#add-device-container input {
+	width: 100%;
+	float: left;
+}
+
+#add-device-fields-container label {
+	font-size: large;
+}
+
+#add-device-fields-container input {
+	font-size: x-large;
+	margin-bottom: 0.5em;
+}
+
+#add-device-power-container,
+#add-device-hours-container {
+	width: 49%;
+	float: left;
+}
+
+#add-device-hours-container {
+	float: right;
+}
+
+#add-device-button-container {
+	text-align: center;
+}
+
+#categories-list li {
+	margin: 0;
+	padding: 0.5em 1em;
+	background-color: #f6f6f6;
+	border-radius: 0;
+	-moz-border-radius: 0;
+	-webkit-border-radius: 0;
+}
+
+#categories-list li:not(:last-child) {
+	border-bottom: 1px solid #bababa;
+}
+
+.cat-selected {
+	background-color: #68ADFC !important;
 }
 
 /** ---------- Forms ---------- **/
