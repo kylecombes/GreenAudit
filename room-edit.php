@@ -31,7 +31,7 @@
 	</div>
 	<div id="add-device-details-container">
 		<div id="categories-container" class="list-container">
-			<ul id="categories-list"><?php echo (new DevCats())->getCategories(null) ?></ul>
+			<ul id="categories-list"><?php echo (new DevCats())->getCategories(null, false) ?></ul>
 		</div>
 		<div id="add-device-fields-container">
 			<label>Name (optional)</label>

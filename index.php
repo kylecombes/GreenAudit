@@ -10,11 +10,11 @@
 <script type='text/javascript' src="/js/jquery.jeditable.min.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 
-<div id="add-device-container">
+<div id="add-device-container"><div id="add-device-header">
 	<h1>Rooms</h1>
 	<input placeholder="Name" type="text" id="room-add-name" length="60"/>
 	<button id="room-add-button">Add</button>
-</div>
+</div></div>
 <div id="room-list-container" class="list-container">
 	<ul>
 		<?php echo (new RoomManager())->getRoomsAsListHTML(); ?>

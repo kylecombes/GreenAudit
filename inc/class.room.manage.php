@@ -175,7 +175,6 @@ class RoomManager
 			$stmt->bindParam(':json', $json, PDO::PARAM_STR);
 			$stmt->execute();
 			$stmt->closeCursor();
-			error_log("id: ".$id." Devices: ".$json, 3, "/var/www/log/error.log");
 			
 		} catch(PDOException $e) {
 			return $e->getMessage();

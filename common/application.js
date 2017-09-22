@@ -8,7 +8,8 @@ $(document).ready( function() {
 		refreshTotals();
 	});
 	
-	list = $('.list-container').children('ul');
+	list = $('#device-list-container').children('ul');
+	catList = $('#categories-list');
 	
 	list.sortable({
 		handle   : ".reorder-handle",
@@ -38,7 +39,7 @@ $(document).ready( function() {
 	
 	refreshTotals();
 	
-	$("#categories-list").on('click', 'li', catClick);
+	$("#categories-list").on('click', 'span', catClick);
 });
 
 function renameDevice(value) {
@@ -87,11 +88,49 @@ function refreshTotals() {
 }
 
 function catClick() {
-	if ($(this).hasClass('cat-selected') == false) {
-		$('.cat-selected').removeClass('cat-selected');
-		$(this).addClass('cat-selected');
-		
+	var cat = $(this).parent();
+	if (cat.hasClass('cat-selected') == false) { // Not selected
+		cat.parent().children('li').removeClass('cat-selected');
+		cat.addClass('cat-selected');
+		getCatChildren(cat.data('id'));
+		var defOnUsage = cat.attr('data-def-on-usage');
+		if (defOnUsage > 0) {
+			updateEditFields(defOnUsage);
+		}
+	} else { // Selected
+		cat.removeClass('cat-selected');
 	}
+}
+
+function getCatChildren(id) {
+	if (id.toString().length > 0) {
+		$.get(
+			"/db-interaction/device-cats.php",
+			"action=get-children&id="  + id,
+			catResponse,
+			"json"
+		);
+	}
+	
+}
+
+function catResponse(response) {
+	var parent = response.parentId;
+	var children = response.children;
+	if (children == "") return;
+	var ul = $('<ul></ul>');
+	ul.append(children);
+	updateCatChildren(parent, ul);
+}
+
+function updateCatChildren(catId, json) {
+	var parentElem = catList.find("[data-id='" + catId + "']");
+	parentElem.children('ul').remove();
+	parentElem.append(json);
+}
+
+function updateEditFields(defaultOnUsage) {
+	$('#add-device-wattage').val(defaultOnUsage);
 }
 
 function addRoom() {
